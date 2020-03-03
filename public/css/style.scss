@@ -1,0 +1,64 @@
+
+/* Variables */
+$background-color: #303841;
+$game-height: 20em;
+$game-width: 20em;
+
+/* Device Breakpoints px - < 576 < 768 < 992 < 1200 */
+$break-small: 576px;
+$break-medium: 768px;
+$break-large: 992px;
+$break-xlarge: 1200px;
+/* mixins */
+@mixin respond-to($media) {
+  @if $media == small {
+    @media (min-width: $break-small) { @content; }
+  } 
+  @else if $media == medium {
+    @media (min-width: $break-medium) and (min-height: $break-small) { @content; }
+  }
+  @else if $media == large {
+    @media (min-width: $break-large) and (min-height: $break-small) { @content; }
+  }
+  @else if $media == xlarge {
+    @media (min-width: $break-xlarge) and (min-height: $break-medium) { @content; }
+  }
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  border: solid 1px black;
+}
+body {
+  background: $background-color;
+}
+#tic-tac-toe {
+  height: $game-height;
+  width: $game-width;
+  max-height: 100%;
+  max-width: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-gap: 0.4em;
+  padding: 0.4em;
+
+  div {
+    background: green;
+    height: 100%;
+    width: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5em;
+    .x, .o {
+      background: red;
+    }
+  }
+}
