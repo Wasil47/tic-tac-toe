@@ -31,50 +31,77 @@ const winCombos = [
   [2, 4, 6]
 ];
 
-const playerPicks = [];
+let playerPicks = [];
+let AIpicks = [];
 
-const arrPosition = [];
+let arrPosition = [];
 for (let i=0; i<9;i++){ arrPosition.push(i)};
 
+const startOver = ()=>{
+  playerPicks = [];
+  AIpicks = [];
+  arrPosition = [];
+  for (let i=0; i<9;i++){ arrPosition.push(i)}; // fill arrPosition (0-8)
+  for (const pos of arrDiv) {
+    pos.classList.remove('x');
+    pos.classList.remove('o');
+    pos.innerHTML = '';
+  }
+};
 
+// app brain -> compare player picks with win combos
+const checkWin = (picks)=>{
+  for (const combo of winCombos) {   
+    let points = 0;   
+    for (let i=0; i<picks.length; i++) {
+      if (combo.includes(picks[i])){
+        points++;          
+        if (points === 3) {
+          console.log(picks+' won!');
+          setTimeout(startOver, 1000);           
+        }                  
+      }
+    } 
+  }
+};
 
 const playerClick = (e) => {
   e.addEventListener('click', ()=>{
-    e.classList.add('x');
-    e.innerHTML = 'X';
-    playerPicks.push(parseInt(e.classList[0]));
+    if (e.classList.length <= 1) { // do not let pick picked item
+      e.classList.add('x');
+      e.innerHTML = 'X';
+      playerPicks.push(parseInt(e.classList[0]));
+      
+      const pRemove = arrPosition.indexOf(parseInt(e.classList[0]));
+      // remove picked int from arrPosition
+      if (pRemove != -1) {
+        arrPosition.splice(pRemove, 1);
+      } else {
+        console.log('Do NOT pick same position!');
+      };
+      console.log(playerPicks);
+      
+      // check if win combo includes player picks
+      checkWin(playerPicks);
 
-    const pRemove = arrPosition.indexOf(parseInt(e.classList[0]));
-    // playerPicks.sort(function(a, b){return a-b}); // sort player picks, propably unnecessary
+      // AI pick pos and remove int from arrPosition
+      if (arrPosition.length >= 1) {
+        const randomAIpick = Math.floor(Math.random()*(arrPosition.length));
+        arrDiv[arrPosition[randomAIpick]].classList.add('o');
+        arrDiv[arrPosition[randomAIpick]].innerHTML = 'O';
+        AIpicks.push(parseInt(arrPosition[randomAIpick]));
+        console.log(AIpicks);        
 
-    // remove picked int from arrPosition
-    if (pRemove != -1) {
-      arrPosition.splice(pRemove, 1);
+        arrPosition.splice(randomAIpick, 1);
+      } else {
+        setTimeout(startOver, 1000);
+      }
+      checkWin(AIpicks);
+
     } else {
-      console.log('Do NOT pick same position');      
-    };
+      console.log('Do NOT pick same position'); 
+    }
 
-    // AI pick pos and remove int from arrPosition
-    const randomAIpick = Math.floor(Math.random()*(arrPosition.length));
-    arrDiv[arrPosition[randomAIpick]].classList.add('o');
-    arrDiv[arrPosition[randomAIpick]].innerHTML = 'O';
-    arrPosition.splice(randomAIpick, 1);
-
-    console.log(arrPosition);
-    
-
-    // app brain -> check if win combo includes player picks
-    for (const combo of winCombos) {   
-      let points = 0;   
-      for (let i=0; i<playerPicks.length; i++) {
-        if (combo.includes(playerPicks[i])){
-          points++;          
-          if (points === 3) {
-            console.log('U won!');
-          }                  
-        }
-      } 
-    }       
   });
 };
 
