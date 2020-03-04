@@ -25,40 +25,81 @@ $break-xlarge: 1200px;
   }
 }
 
+@mixin shake-few {
+  animation: shake .5s;
+  animation-iteration-count: 3;
+}
+/* animations */
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 
-  border: solid 1px black;
+  // border: solid 1px black;
 }
 body {
   background: $background-color;
 }
-#tic-tac-toe {
-  height: $game-height;
-  width: $game-width;
-  max-height: 100%;
-  max-width: 100%;
 
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  grid-gap: 0.4em;
-  padding: 0.4em;
+.shake {
+  @include shake-few;
+}
+#t-t-t {
+  #ttt-points {
+    width: $game-width;
+    max-width: 100%;
 
-  div {
-    background: green;
-    height: 100%;
-    width: 100%;
-    
+    padding: 0.4em;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 5em;
-    .x, .o {
-      background: red;
+    justify-content: space-between;
+  
+    .AIpoints, .playerPoints {
+      font-size: 3em;
+    }
+    .AIpoints {
+      color: rgb(173, 26, 26);
+    }
+    .playerPoints {
+      color: green;
+    }
+  }  
+
+  #tic-tac-toe {
+    height: $game-height;
+    width: $game-width;
+    max-height: 100%;
+    max-width: 100%;
+  
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: 0.4em;
+    padding: 0.4em;
+  
+    div {
+      background: green;
+      height: 100%;
+      width: 100%;
+      
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 5em;
     }
   }
 }
+
