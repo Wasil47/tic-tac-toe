@@ -33,6 +33,7 @@ let playerPicks = [];
 let AIpicks = [];
 let playerPoints = 0;
 let AIpoints = 0;
+const arrBlock = [0, 2, 6, 8];
 
 // creat arr with positions (possible to pick)
 let arrPosition = [];
@@ -79,6 +80,34 @@ const checkWin = (picks)=>{
   }
 };
 
+// I hope You can't win now
+const unbeatable = (arrPos) => {
+  let AIpick = Math.floor(Math.random()*(arrPos.length)); // generate random [pos] from avaliable
+  if (arrPos.includes(4)) {
+    AIpick = arrPos.indexOf(4);
+  } 
+  // else if (playerPicks.includes(4)){    
+  //   // Mamma Mia
+  //   AIpick = arrPos.indexOf(arrBlock[Math.floor(Math.random()*(arrBlock.length))]); // Pasta la vista
+  // }
+  for (const combo of winCombos) {
+    let posLeft = 3;    
+    for (let i=0; i<playerPicks.length; i++) {
+      if (combo.includes(playerPicks[i])){
+        posLeft--;          
+        if (posLeft === 1) { // generate pos to block You if X in row == 2
+          for (const eC of combo) {
+            if (arrPos.includes(eC)) {
+              AIpick = arrPos.indexOf(eC);              
+            }
+          }
+        }                 
+      }
+    }
+  }  
+  return AIpick;
+};
+
 // Do some magic when you click
 const playerClick = (e) => {
   e.addEventListener('click', ()=>{
@@ -101,7 +130,9 @@ const playerClick = (e) => {
       } else {
         // AI pick pos (random) and remove int from arrPosition
         if (arrPosition.length >= 1) {
-          const randomAIpick = Math.floor(Math.random()*(arrPosition.length));
+          const randomAIpick = unbeatable(arrPosition); // generate [pos] from arrPosition 
+          console.log(randomAIpick);          
+
           arrDiv[arrPosition[randomAIpick]].classList.add('o');
           arrDiv[arrPosition[randomAIpick]].innerHTML = 'O';
           AIpicks.push(parseInt(arrPosition[randomAIpick]));
