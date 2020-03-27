@@ -113,6 +113,15 @@ body {
           animation-iteration-count: 3;
 }
 
+#t-t-t {
+  position: relative;
+  height: 20em;
+  width: 20em;
+  max-height: 100%;
+  max-width: 100%;
+  margin: auto;
+}
+
 #t-t-t #ttt-points {
   width: 20em;
   max-width: 100%;

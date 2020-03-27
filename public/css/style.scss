@@ -59,6 +59,13 @@ body {
   @include shake-few;
 }
 #t-t-t {
+  position: relative;
+  height: $game-height;
+  width: $game-width;
+  max-height: 100%;
+  max-width: 100%;
+  margin: auto;
+  
   #ttt-points {
     width: $game-width;
     max-width: 100%;
